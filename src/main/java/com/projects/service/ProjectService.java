@@ -5,6 +5,8 @@ import com.projects.model.Project;
 import com.projects.repository.ProjectRepository;
 import com.projects.vo.ResponseVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -32,14 +34,14 @@ public class ProjectService {
             Employee employee;
             ResponseEntity<Integer[]> response =
                     restTemplate.getForEntity(
-                            "http://localhost:8083/api/allocation/employeeIds/"+proj.getProjectId(),
+                            "http://Allocation-Service/api/allocation/employeeIds/"+proj.getProjectId(),
                             Integer[].class);
             Integer[] empIds = response.getBody();
 
             if(empIds!=null){
                 for(Integer id: empIds){
                     employee = restTemplate
-                            .getForObject("http://localhost:8081/api/employee/"+id,Employee.class);
+                            .getForObject("http://Employee-Service/api/employee/"+id,Employee.class);
                     employees.add(employee);
                 }
                 responseVo.setEmployees(employees);
@@ -60,13 +62,13 @@ public class ProjectService {
         Project project = repo.getById(id);
         responseVo.setProject(project);
         ResponseEntity<int[]> response =
-                restTemplate.getForEntity("http://localhost:8083/api/allocation/employeeIds/"+id,int[].class);
+                restTemplate.getForEntity("http://Allocation-Service/api/allocation/employeeIds/"+id,int[].class);
         int[] empIds = response.getBody();
 
         if(empIds!=null){
             for(Integer ids: empIds){
                 Employee employee = restTemplate
-                        .getForObject("http://localhost:8081/api/employee/"+ids,Employee.class);
+                        .getForObject("http://Employee-Service/api/employee/"+ids,Employee.class);
                 employees.add(employee);
             }
             message = "Available Employees in Project";
@@ -93,4 +95,7 @@ public class ProjectService {
         repo.deleteById(id);
     }
 
+    public List<Project> getAllProjects(){
+        return repo.findAll();
+    }
 }

@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -23,7 +24,9 @@ import java.util.Set;
  * 6. Delete Project Details
  * */
 
-@Api(value = "Swagger - 2 ProjectController")
+// Swagger URL - http://localhost:8082/swagger-ui/
+
+@Api(value = "Project", tags = {"Project"})
 @RestController
 @RequestMapping("/api/project")
 public class ProjectController {
@@ -103,5 +106,10 @@ public class ProjectController {
     public String deleteProjectById(@PathVariable Integer id){
         service.deleteProjectById(id);
         return "Project Details Deleted";
+    }
+
+    @GetMapping("/get/all/projects")
+    public List<Project> findAllProject(){
+        return service.getAllProjects();
     }
 }

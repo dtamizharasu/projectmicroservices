@@ -32,8 +32,7 @@ public class Swagger2UiConfig {
                 null,
                 "1.0",
                 "Terms of Service",
-                new Contact("Project Service", null,
-                        null),
+                "",
                 "Apache License Version 2.0",
                 "https://www.apache.org/licenses/"
         );
